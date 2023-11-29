@@ -3,13 +3,16 @@ cmake_minimum_required(VERSION 3.5)
 project(raylibjs LANGUAGES C)
 
 if (NOT CMAKE_BUILD_TYPE)
-    message(STATUS "No build type selected, default to Release")
     set(CMAKE_BUILD_TYPE "Release")
 endif()
+
 list(APPEND raylibjs_cflags -Wall -g)
 if (CMAKE_BUILD_TYPE MATCHES "Debug")
     list(APPEND raylibjs_cflags -ggdb -O0 -fno-omit-frame-pointer)
 endif()
+
+message(STATUS "Building in ${CMAKE_BUILD_TYPE} mode")
+message(STATUS "Building with ${CMAKE_C_COMPILER_ID} ${CMAKE_C_COMPILER_VERSION} on ${CMAKE_SYSTEM}")
 
 include(FetchContent)
 set(FETCHCONTENT_QUIET FALSE)
@@ -24,16 +27,17 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(raylib)
 
-FetchContent_Declare(
-    quickjs
-    GIT_REPOSITORY "https://github.com/mezum/quickjs-cmake.git"
-    GIT_TAG "master"
-    GIT_PROGRESS TRUE
+include(ExternalProject)
+ExternalProject_Add(
+  quickjs
+  GIT_REPOSITORY "https://github.com/bellard/quickjs.git"
+  EXCLUDE_FROM_ALL TRUE
+  BUILD_COMMAND make
+  STEP_TARGETS build
 )
-FetchContent_MakeAvailable(quickjs)
 
-message(STATUS "Building in ${CMAKE_BUILD_TYPE} mode")
-message(STATUS "Building with ${CMAKE_C_COMPILER_ID} ${CMAKE_C_COMPILER_VERSION} on ${CMAKE_SYSTEM}")
+set(quickjs_BINARY_DIR "${CMAKE_BINARY_DIR}/quickjs-prefix")
+set(quickjs_SOURCE_DIR "${CMAKE_BINARY_DIR}/quickjs-prefix")
 
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS ON)
