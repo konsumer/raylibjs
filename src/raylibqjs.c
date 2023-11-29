@@ -24,7 +24,7 @@ static JSValue js_InitWindow(JSContext* ctx, JSValueConst this_val, int argc, JS
   return JS_UNDEFINED;
 }
 
-static JSValue js_js_raylib_exports(JSContext* ctx, JSValueConst this_val, int argc, JSValueConst* argv) {
+static JSValue js_SetTargetFPS(JSContext* ctx, JSValueConst this_val, int argc, JSValueConst* argv) {
   int fps;
   if (JS_ToInt32(ctx, &fps, argv[0])) {
     return JS_EXCEPTION;
@@ -117,7 +117,7 @@ static JSValue js_DrawFPS(JSContext* ctx, JSValueConst this_val, int argc, JSVal
 
 static const JSCFunctionListEntry js_raylib_exports[] = {
   JS_CFUNC_DEF("InitWindow", 3, js_InitWindow),
-  JS_CFUNC_DEF("SetTargetFPS", 1, js_js_raylib_exports),
+  JS_CFUNC_DEF("SetTargetFPS", 1, js_SetTargetFPS),
   JS_CFUNC_DEF("WindowShouldClose", 0, js_WindowShouldClose),
   JS_CFUNC_DEF("BeginDrawing", 0, js_BeginDrawing),
   JS_CFUNC_DEF("EndDrawing", 0, js_EndDrawing),
