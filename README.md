@@ -1,8 +1,6 @@
 ```
-brew install raylib quickjs
-
 cmake -B build
 cmake --build build
 
-qjs test.js
+./build/_deps/qjs-build/quickjs test.js
 ```
