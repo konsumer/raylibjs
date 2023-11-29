@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 find_package(PkgConfig REQUIRED)
 
-project(raylibjs LANGUAGES C)
+project(raylibqjs LANGUAGES C)
 
 set(CMAKE_C_STANDARD 11)
 # set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -14,7 +14,7 @@ if (NOT CMAKE_BUILD_TYPE)
 endif()
 
 if (CMAKE_BUILD_TYPE MATCHES "Debug")
-    list(APPEND raylibjs_cflags -ggdb -O0 -fno-omit-frame-pointer)
+    list(APPEND raylibqjs_cflags -ggdb -O0 -fno-omit-frame-pointer)
 endif()
 
 message(STATUS "Building in ${CMAKE_BUILD_TYPE} mode")
@@ -26,11 +26,10 @@ pkg_check_modules(raylib REQUIRED IMPORTED_TARGET raylib)
 set(quickjs_SOURCE_DIR "/usr/local/Cellar/quickjs/2021-03-27/include/quickjs/")
 set(quickjs_LIB_DIR "/usr/local/Cellar/quickjs/2021-03-27/lib/quickjs/")
 
-add_library(raylibjs SHARED src/raylibjs.c)
-set_target_properties(raylibjs PROPERTIES PREFIX "")
-set_target_properties(raylibjs PROPERTIES SUFFIX ".so")
-target_link_directories(raylibjs PRIVATE "${quickjs_LIB_DIR}")
-target_link_libraries(raylibjs PkgConfig::raylib quickjs)
-target_include_directories(raylibjs PUBLIC ${raylib_INCLUDE_DIRS} "${quickjs_SOURCE_DIR}")
-target_compile_options(raylibjs PUBLIC ${raylib_CFLAGS_OTHER})
+add_library(raylibqjs SHARED src/raylibqjs.c)
+set_target_properties(raylibqjs PROPERTIES PREFIX "" SUFFIX ".so")
+target_link_directories(raylibqjs PRIVATE "${quickjs_LIB_DIR}")
+target_link_libraries(raylibqjs PkgConfig::raylib quickjs)
+target_include_directories(raylibqjs PUBLIC ${raylib_INCLUDE_DIRS} "${quickjs_SOURCE_DIR}")
+target_compile_options(raylibqjs PUBLIC ${raylib_CFLAGS_OTHER})
 
