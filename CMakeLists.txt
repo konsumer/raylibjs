@@ -42,5 +42,9 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_library(raylibjs SHARED src/raylib.c)
+
+# I think quickjs needs this?
+set_target_properties(raylibjs PROPERTIES SUFFIX ".so")
+
 target_compile_options(raylibjs PRIVATE ${raylibjs_cflags})
 target_link_libraries(raylibjs quickjs raylib)
