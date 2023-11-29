@@ -22,14 +22,16 @@ message(STATUS "Building with ${CMAKE_C_COMPILER_ID} ${CMAKE_C_COMPILER_VERSION}
 
 pkg_check_modules(raylib REQUIRED IMPORTED_TARGET raylib)
 
-# is there a better way to link to system-version?
-set(quickjs_SOURCE_DIR "/usr/local/Cellar/quickjs/2021-03-27/include/quickjs/")
-set(quickjs_LIB_DIR "/usr/local/Cellar/quickjs/2021-03-27/lib/quickjs/")
+# is there a better way to link to system-version? It didn't come with pkg-config
+# probly some better way to build this with cmake...
+set(quickjs_SOURCE_DIR "/usr/local/Cellar/quickjs/2021-03-27")
+set(quickjs_INCLUDE_DIR "${quickjs_SOURCE_DIR}/include/quickjs/")
+set(quickjs_LIB_DIR "${quickjs_SOURCE_DIR}/lib/quickjs/")
 
 add_library(raylibqjs SHARED src/raylibqjs.c)
 set_target_properties(raylibqjs PROPERTIES PREFIX "" SUFFIX ".so")
 target_link_directories(raylibqjs PRIVATE "${quickjs_LIB_DIR}")
 target_link_libraries(raylibqjs PkgConfig::raylib quickjs)
-target_include_directories(raylibqjs PUBLIC ${raylib_INCLUDE_DIRS} "${quickjs_SOURCE_DIR}")
+target_include_directories(raylibqjs PUBLIC ${raylib_INCLUDE_DIRS} "${quickjs_INCLUDE_DIR}")
 target_compile_options(raylibqjs PUBLIC ${raylib_CFLAGS_OTHER})
 
